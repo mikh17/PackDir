@@ -220,12 +220,12 @@ class PackDir {
 
         let args = [
             this.escapeArg(pathToZipFile),
-            this.escapeArg(pathWithMask),
-            '-ssw'
+            this.escapeArg(pathWithMask)
         ];
 
         if (isWindows) {
             args.unshift('a', '-tzip');
+            args.push('--ssw');
             // Within Electron + ASAR, we can only use `execFile()` for bundled zip.exe
             this.execFile(this.getZipPath(), args, params, callback || unset);
         } else {
