@@ -220,7 +220,8 @@ class PackDir {
 
         let args = [
             this.escapeArg(pathToZipFile),
-            this.escapeArg(pathWithMask)
+            this.escapeArg(pathWithMask),
+            '-ssw'
         ];
 
         if (isWindows) {
