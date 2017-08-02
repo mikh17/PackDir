@@ -1,6 +1,6 @@
 {
     "name": "pack-dir",
-    "version": "0.7.3",
+    "version": "0.7.4",
     "description": "Pack/unpack specified directory with native current OS command line tools.",
     "keywords": [
         "pack",
