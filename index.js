@@ -18,11 +18,13 @@ class PackDir {
             isSilent: false,
             isSync: true,
             skipDirName: true,
-            zipOutputMaxBuffer: 1024 * 200
+            zipOutputMaxBuffer: 1024 * 200,
+            sevenZip: false
         };
 
         this.DMG = '.dmg';
         this.ZIP = '.zip';
+        this.SEVEN_ZIP = '.7z';
     }
 
     asDMG(path) {
@@ -202,9 +204,10 @@ class PackDir {
             pathInfo = Path.parse(path),
             pathStat = FS.statSync(path),
             pathWithMask = pathInfo.base,
-            pathToZipFile = pathInfo.base + '.zip',
             params = {};
-            
+
+        let pathToZipFile = pathInfo.base + (this.params.sevenZip ? this.SEVEN_ZIP : this.ZIP);
+
         if (pathInfo.dir) {
             params.cwd = pathInfo.dir;
         }
@@ -223,8 +226,9 @@ class PackDir {
             this.escapeArg(pathWithMask)
         ];
 
+        const typeArg = this.params.sevenZip ? '-t7z' : '-tzip';
         if (isWindows) {
-            args.unshift('a', '-tzip', '-ssw');
+            args.unshift('a', typeArg, '-ssw');
             // Within Electron + ASAR, we can only use `execFile()` for bundled zip.exe
             this.execFile(this.getZipPath(), args, params, callback || unset);
         } else {
