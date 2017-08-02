@@ -200,13 +200,15 @@ class PackDir {
     }
 
     zip(path, callback) {
-        let fileName = path + this.ZIP,
+        const is7Zip = (this.params.sevenZip && isWindows) ? this.SEVEN_ZIP : this.ZIP
+        const fileExt = is7Zip ? this.SEVEN_ZIP : this.ZIP;
+        let fileName = path + fileExt,
             pathInfo = Path.parse(path),
             pathStat = FS.statSync(path),
             pathWithMask = pathInfo.base,
             params = {};
 
-        let pathToZipFile = pathInfo.base + (this.params.sevenZip ? this.SEVEN_ZIP : this.ZIP);
+        let pathToZipFile = pathInfo.base + fileExt;
 
         if (pathInfo.dir) {
             params.cwd = pathInfo.dir;
@@ -226,7 +228,7 @@ class PackDir {
             this.escapeArg(pathWithMask)
         ];
 
-        const typeArg = this.params.sevenZip ? '-t7z' : '-tzip';
+        const typeArg = is7Zip ? '-t7z' : '-tzip';
         if (isWindows) {
             args.unshift('a', typeArg, '-ssw');
             // Within Electron + ASAR, we can only use `execFile()` for bundled zip.exe
