@@ -200,7 +200,7 @@ class PackDir {
     }
 
     zip(path, callback) {
-        const is7Zip = (this.params.sevenZip && isWindows) ? this.SEVEN_ZIP : this.ZIP
+        const is7Zip = this.params.sevenZip && isWindows;
         const fileExt = is7Zip ? this.SEVEN_ZIP : this.ZIP;
         let fileName = path + fileExt,
             pathInfo = Path.parse(path),
